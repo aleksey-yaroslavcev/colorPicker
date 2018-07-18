@@ -1,8 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QClipboard>
-
-#include "NewColorDialog.h"
+#include <QColorDialog>
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -22,11 +21,12 @@ void MainWindow::onNewColorSelected(QColor color)
     QPushButton* button = new QPushButton(this);
     _buttons.push_back(button);
     _colors.push_back(color);
-    QPalette pal = button->palette();
-    pal.setColor(QPalette::Button, color);
-    button->setAutoFillBackground(true);
-    button->setPalette(pal);
-    button->update();
+    button->setStyleSheet(QString("QPushButton { \
+                                    background-color: %1; \
+                                   } \
+                                   QPushButton:pressed { \
+                                    background-color: white; \
+                                   }").arg(color.name()));
     button->setText(color.name());
     ui->vertLayout->addWidget(_buttons.back());
     connect(button, &QPushButton::clicked, [ = ]() {
@@ -36,9 +36,7 @@ void MainWindow::onNewColorSelected(QColor color)
 
 void MainWindow::on_actionAddColor_triggered()
 {
-    auto dlg = new NewColorDialog(this);
-    connect(dlg, &NewColorDialog::newColorSelected, this, &MainWindow::onNewColorSelected);
-    dlg->show();
+    onNewColorSelected(QColorDialog::getColor(Qt::green, this, tr("Select Color")));
 }
 
 void MainWindow::on_actionRemoveLastColor_triggered()

@@ -25,13 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp \
-    NewColorDialog.cpp
+        MainWindow.cpp
 
 HEADERS += \
-        MainWindow.h \
-    NewColorDialog.h
+        MainWindow.h
 
 FORMS += \
-        MainWindow.ui \
-    NewColorDialog.ui
+        MainWindow.ui
