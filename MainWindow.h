@@ -25,6 +25,9 @@ private slots:
     void on_actionAddColor_triggered();
     void on_actionRemoveLastColor_triggered();
 
+    void on_actionSaveToFile_triggered();
+    void on_actionLoadFromFile_triggered();
+
 private:
     Ui::MainWindow* ui;
     QList<QColor> _colors;

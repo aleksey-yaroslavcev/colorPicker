@@ -23,7 +23,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="vertLayout"/>
+     <layout class="QFormLayout" name="formLayout"/>
     </item>
     <item>
      <spacer name="verticalSpacer">
@@ -59,11 +59,16 @@
    </attribute>
    <addaction name="actionAddColor"/>
    <addaction name="actionRemoveLastColor"/>
+   <addaction name="actionSaveToFile"/>
+   <addaction name="actionLoadFromFile"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAddColor">
    <property name="text">
     <string>+</string>
+   </property>
+   <property name="toolTip">
+    <string>Add color</string>
    </property>
    <property name="shortcut">
     <string>Ins</string>
@@ -73,8 +78,27 @@
    <property name="text">
     <string>-</string>
    </property>
+   <property name="toolTip">
+    <string>Remove last color</string>
+   </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionSaveToFile">
+   <property name="text">
+    <string>S</string>
+   </property>
+   <property name="toolTip">
+    <string>Save colors to file</string>
+   </property>
+  </action>
+  <action name="actionLoadFromFile">
+   <property name="text">
+    <string>L</string>
+   </property>
+   <property name="toolTip">
+    <string>Load colors from file</string>
    </property>
   </action>
  </widget>
