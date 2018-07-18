@@ -65,10 +65,16 @@
    <property name="text">
     <string>+</string>
    </property>
+   <property name="shortcut">
+    <string>Ins</string>
+   </property>
   </action>
   <action name="actionRemoveLastColor">
    <property name="text">
     <string>-</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

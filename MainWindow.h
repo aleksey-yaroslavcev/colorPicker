@@ -18,9 +18,11 @@ public:
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
+public slots:
+    void onNewColorSelected(QColor color);
+
 private slots:
     void on_actionAddColor_triggered();
-
     void on_actionRemoveLastColor_triggered();
 
 private:
