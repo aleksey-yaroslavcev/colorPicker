@@ -3,8 +3,10 @@
 #include <QClipboard>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QTextStream>
 #include <QString>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -20,6 +22,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::onNewColorSelected(QColor color)
 {
+    bool ok;
+    QString butName = QInputDialog::getText(this, tr("New color"), tr("Color name:"), QLineEdit::Normal,
+                                            color.name() + " | ", &ok);
+    if (!ok)
+        return;
+    onNewColorSelected(color, butName);
+}
+
+void MainWindow::onNewColorSelected(QColor color, const QString& name)
+{
     int i = _colors.size();
     QPushButton* button = new QPushButton(this);
     _buttons.push_back(button);
@@ -30,7 +42,7 @@ void MainWindow::onNewColorSelected(QColor color)
                                    QPushButton:pressed { \
                                     background-color: white; \
                                    }").arg(color.name()));
-    button->setText(color.name());
+    button->setText(name);
     ui->formLayout->addRow(QString::number(i), _buttons.back());
     connect(button, &QPushButton::clicked, [ = ]() {
         QGuiApplication::clipboard()->setText(_colors.at(i).name());
@@ -58,13 +70,10 @@ void MainWindow::on_actionSaveToFile_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this);
     if (!fileName.isEmpty()) {
-        QFile file(fileName);
-        if (file.open(QIODevice::WriteOnly)) {
-            QTextStream out(&file);
-            foreach (QColor colorItem, _colors) {
-                out << colorItem.name() << "\n";
-            }
-            file.close();
+        QSettings file(fileName, QSettings::IniFormat);
+        for (int i = 0; i < _colors.size(); i++) {
+            file.setValue(QString("color%1").arg(i), _colors.at(i));
+            file.setValue(QString("color%1-Name").arg(i), _buttons.at(i)->text());
         }
     }
 }
@@ -73,14 +82,12 @@ void MainWindow::on_actionLoadFromFile_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this);
     if (!fileName.isEmpty()) {
-        QFile file(fileName);
-        if (file.open(QIODevice::ReadOnly)) {
-            QTextStream in(&file);
-            while (!in.atEnd()) {
-                QString line = in.readLine();
-                onNewColorSelected(QColor(line));
-            }
-            file.close();
+        QSettings file(fileName, QSettings::IniFormat);
+        int i = 0;
+        while (file.value(QString("color%1").arg(i)).isValid()) {
+            onNewColorSelected(QColor(file.value(QString("color%1").arg(i)).toString()),
+                               file.value(QString("color%1-Name").arg(i)).toString());
+            i++;
         }
     }
 }
