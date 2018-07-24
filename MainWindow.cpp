@@ -51,7 +51,14 @@ void MainWindow::onNewColorSelected(QColor color, const QString& name)
 
 void MainWindow::on_actionAddColor_triggered()
 {
-    onNewColorSelected(QColorDialog::getColor(Qt::green, this, tr("Select Color")));
+    QColor newcolor(Qt::black);
+    QString clipboardData = QGuiApplication::clipboard()->text();
+    if (!clipboardData.isEmpty()) {
+        if (clipboardData.at(0) != '#')
+            clipboardData = QString("#") + clipboardData;
+        newcolor = QColor(clipboardData);
+    }
+    onNewColorSelected(QColorDialog::getColor(newcolor, this, tr("Select Color")));
 }
 
 void MainWindow::on_actionRemoveLastColor_triggered()
